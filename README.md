@@ -17,35 +17,40 @@
 <br/>
 
 ***
-<br/>
-
-EZ Mode Automations use pixel/image searches to detect game events and perform actions by sending keystrokes and mouse events to the Roblox client — think of it as ***smart macros***. The tool does not inject code into the client (commonly known as scripting) or modify game files, however, automations of any kind can violate Roblox TOS, please read the below warning.
-
 > [!WARNING]  
 > Automating games in Roblox violates their Terms of Service and can lead to account bans. Use the automations at your own risk.
-<br/>
 
+EZ Mode Automations use pixel/image searches to detect game events and perform actions by sending keystrokes and mouse events to the Roblox client — think of it as ***smart macros***. The tool does not inject code into the client (commonly known as scripting) or modify game files, however, automations of any kind can violate Roblox TOS.
 ***
 <br/>
 
 ## Usage Guide
 ### Support
 Join my community Discord server at [discord.gg/kipperz](https://discord.gg/kipperz) for support, suggestions, or game discussion.
+<br/>
 
 ### Prerequisites
 - **Windows 10/11**
 - **Minimum Display Resolution: 1280x720**
 - **Windows Display Scaling: 100%**
 - **Roblox Text Size: Default**
+<br/>
 
-### Installation
+### Installation (Option 1)
+1. **Download ezmode_gacf.exe from [releases](https://github.com/kipperz/ezmode_gacf/releases)**
+
+2. **Run "ezmode_gacf.exe"**
+<br/>
+
+### Installation (Option 2)
+
 1. **Download and Install [AutoHotKey v2.0](https://www.autohotkey.com/)**
 
-1. **Download the [latest release](https://github.com/kipperz/ezmode_gacf/releases)**
+1. **Download ezmode_gacf-beta.zip from [releases](https://github.com/kipperz/ezmode_gacf/releases)**
 
 2. **Extract **ezmode_gacf-beta.zip** to a folder**
 
-3. **Run "ezmode_gacf.ahk"** - ezmode_gacf.ini will be created to store settings
+3. **Run "ezmode_gacf.ahk"**
 
 4. **Press the ⚙️ button** for settings (optional)
 <br/>

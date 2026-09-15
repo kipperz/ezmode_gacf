@@ -10,7 +10,7 @@
 **Key Features**
 - [Rebirth Automation](#rebirth-automation)
 - [Arena Automations](#arena-automations)
-- [UFO Event Notification](#ufo-event-notifications)
+- [UFO Event Notification](#event-notifications)
 
 **Other**
 - [License](#license)
@@ -31,18 +31,18 @@ Join my community Discord server at [discord.gg/kipperz](https://discord.gg/kipp
 
 ### Prerequisites
 - **Windows 10/11**
-- **Minimum Display Resolution: 1280x720**
 - **Windows Display Scaling: 100%**
 - **Roblox Text Size: Default**
 <br/>
 
-### Installation (Option 1)
+### Installation
+#### Option 1
 1. **Download ezmode_gacf.exe from [releases](https://github.com/kipperz/ezmode_gacf/releases)**
 
 2. **Run "ezmode_gacf.exe"**
 <br/>
 
-### Installation (Option 2)
+#### Option 2
 
 1. **Download and Install [AutoHotKey v2.0](https://www.autohotkey.com/)**
 
@@ -51,8 +51,6 @@ Join my community Discord server at [discord.gg/kipperz](https://discord.gg/kipp
 2. **Extract **ezmode_gacf-beta.zip** to a folder**
 
 3. **Run "ezmode_gacf.ahk"**
-
-4. **Press the ⚙️ button** for settings (optional)
 <br/>
 
 

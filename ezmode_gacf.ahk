@@ -104,7 +104,7 @@ CLICK_COORDS := {
     REBIRTH_ICON:            {X: 734 + 54 // 2, Y: 243 + 48 // 2, W: 54, H: 48},
     REBIRTH_WINDOW_CLOSE:    {X: 588 + 30 // 2, Y: 50 + 30 // 2,  W: 30, H: 30},
     REBIRTH_BUTTON:          {X: 356 + 88 // 2, Y: 415 + 40 // 2, W: 88, H: 40},
-    PURCHASE_AD:             {X: 767,  Y: 380}, ; verify
+    PURCHASE_AD:             {X: 562 + 40 // 2, Y: 309 + 44 // 2, W: 24, H: 24},
     ARENA_ICON:              {X: 55 + 40 // 2,  Y: 372 + 44 // 2, W: 40, H: 44},
     GO_TO_BATTLE:            {X: 356 + 88 // 2, Y: 396 + 24 // 2, W: 88, H: 24},
     EXIT_ARENA:              {X: 66, Y: 55},
@@ -843,9 +843,16 @@ CheckNotYetButton() {
 }
 
 CheckForPurchaseAd() {
-    s := PIXEL_SEARCH.PURCHASE_AD
-    if PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)
+    WinGetClientPos(&robloxX, &robloxY, &robloxW, &robloxH, ROBLOX_WINDOW)
+    searchX1 := robloxX + 552
+    searchY1 := robloxY + 296
+    searchX2 := robloxX + 600
+    searchY2 := robloxY + 349
+
+    Text := "|<>**1$15.zzzDU0w070UsA21k0T07s0zUDw1zUDs0y07k0Q23Us8711w6DXzzw"
+    if FindText(&x, &y, searchX1, searchY1, searchX2, searchY2, 0, 0, Text) {
         ClickAt(CLICK_COORDS.PURCHASE_AD)
+    }
 }
 
 CheckForArenaWindow() {
@@ -1122,98 +1129,28 @@ StepOne() {
 
 StepTwo() {
     global noticeMessage := "Upgrading feeders"
-    if (mainGui.Title != GUI_SETTINGS.RUNNING.WIN_TITLE)
+    if (mainGui.Title == GUI_SETTINGS.RUNNING.WIN_TITLE)
+        CheckActiveWindow()
+    else
         SwitchGui(GUI_SETTINGS.RUNNING)
 
     SendToTower()
     Sleep TIMINGS.TOWER_ENTRY_WAIT
-
-
-
-    startTime := A_TickCount
-    Loop {
-        CheckForPurchaseAd()
-
-        if (initialRetreatTime && initialRetreatTime * 1000 - TIMINGS.TOWER_ENTRY_WAIT < A_TickCount - startTime){
-            ; MsgBox "Initial Retreat time triggered after " A_TickCount - startTime " milliseconds"
-            recalled := true
-            Retreat()
-            break
-        }
-
-        if (feederUpgradeMethod == "strafe")
-            UpgradeFeedersStrafe()
-        else if (feederUpgradeMethod == "turn")
-            UpgradeFeedersTurn()
-        else {
-            CheckActiveWindow()
-            Send "e"
-            Sleep 500 ; sleep hard code
-        }
-
-        if CheckForKnockout() {
-            noticeMessage := "Knocked Out"
-            knockedOut := true
-            break
-        }        
-
-
-    } Until (A_TickCount - startTime > TIMINGS.TIMEOUTS.TOWER_RUN_INITIAL)
-
-
-
-    startTime := A_TickCount
-    knockedOut := false
-    recalled := false
-
-    while (A_TickCount - startTime < TIMINGS.TIMEOUTS.TOWER_RUN_INITIAL) {
-        CheckForPurchaseAd()
-
-        if (initialRetreatTime && initialRetreatTime * 1000 - TIMINGS.TOWER_ENTRY_WAIT < A_TickCount - startTime){
-            ; MsgBox "Initial Retreat time triggered after " A_TickCount - startTime " milliseconds"
-            recalled := true
-            Retreat()
-            break
-        }
-        
-        if (feederUpgradeMethod == "strafe")
-            UpgradeFeedersStrafe()
-        else if (feederUpgradeMethod == "turn")
-            UpgradeFeedersTurn()
-        else {
-            CheckActiveWindow()
-            Send "e"
-            Sleep 500 ; sleep hard code
-        }
-
-        if CheckForKnockout() {
-            noticeMessage := "Knocked Out"
-            knockedOut := true
-            break
-        }
-    }
-
-    if knockedOut {
-        ClickAt(CLICK_COORDS.KNOCKED_OUT_NO_THANKS)
-
+    
+    result := GetInitialTowerRunResult()
+    if result {
         if (feederUpgradeMethod == "single")
             Sleep TIMINGS.FEED_TIME_SINGLE
         else
             Sleep TIMINGS.FEED_TIME_DOUBLE
-        
-        StepThree()
-    } else if recalled {
-        if (feederUpgradeMethod == "single")
-            Sleep TIMINGS.FEED_TIME_SINGLE
-        else
-            Sleep TIMINGS.FEED_TIME_DOUBLE
-
         StepThree()
     } else {
-        ; Timed out looking for knockout window
-        ; Move mouse off Tower icon and rerun
-        ClearMousePos()
-        StepTwo()
+        result := MsgBox("No initial tower run results after " TIMINGS.TIMEOUTS.TOWER_RUN_INITIAL " seconds.`n`nWould you retry?" , "AutoRebirth Error", "YesNo T30 Icon! 0x40000")
+        if result = "No" {
+            ReloadScript()
+        } else
+            ClearMousePos()
+            StepTwo()
     }
 }
 
@@ -1291,6 +1228,8 @@ StepFour() { ; rebirth is ready, just wait for rebirth button to be available
 SendToTower() {
     ClickAt(CLICK_COORDS.TOWER_ICON)
     Sleep TIMINGS.UI_RESPONSE
+
+    CheckForPurchaseAd()
 
     s := PIXEL_SEARCH.SKIP_TO_FRONTIER
     if PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR) {
@@ -1405,6 +1344,36 @@ TryRebirth() { ; click rebirth until it works
     } Until (A_TickCount - startTime > TIMINGS.TIMEOUTS.TRY_REBIRTH)
 
     MsgBox "Timed out trying to use the Rebirth button"
+    return false
+}
+
+GetInitialTowerRunResult() {
+    startTime := A_TickCount
+    Loop {
+        CheckForPurchaseAd()
+
+        if (initialRetreatTime && initialRetreatTime * 1000 - TIMINGS.TOWER_ENTRY_WAIT < A_TickCount - startTime){
+            Retreat()
+            return true
+        }
+
+        if (feederUpgradeMethod == "strafe")
+            UpgradeFeedersStrafe()
+        else if (feederUpgradeMethod == "turn")
+            UpgradeFeedersTurn()
+        else {
+            CheckActiveWindow()
+            Send "e"
+            Sleep 500 ; sleep hard code
+        }
+
+        if CheckForKnockout() {
+            noticeMessage := "Knocked Out"
+            ClickAt(CLICK_COORDS.KNOCKED_OUT_NO_THANKS)
+            return true
+        }        
+    } Until (A_TickCount - startTime > TIMINGS.TIMEOUTS.TOWER_RUN_INITIAL)
+
     return false
 }
 

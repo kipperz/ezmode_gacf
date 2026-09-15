@@ -10,7 +10,7 @@
 ; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ; GNU Affero General Public License for more details.
-VERSION := "v0.5"
+VERSION := "v0.5.1"
 
 
 #Requires AutoHotkey v2.0

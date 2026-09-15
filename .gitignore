@@ -1,0 +1,5 @@
+gui/
+.vscode/
+.venv/
+*.ini
+*.txt

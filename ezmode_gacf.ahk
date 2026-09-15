@@ -10,10 +10,12 @@
 ; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ; GNU Affero General Public License for more details.
+VERSION := "v0.5"
 
 
 #Requires AutoHotkey v2.0
 #SingleInstance Force
+#Include lib/FindText.ahk
 SendMode "Event"
 CoordMode "Mouse", "Client"
 CoordMode "Pixel", "Screen"
@@ -26,7 +28,6 @@ CoordMode "Pixel", "Screen"
 ROBLOX_WINDOW := "ahk_exe RobloxPlayerBeta.exe"
 INI_FILE := "ezmode_gacf.ini"
 GUI_TITLE := "EZ Mode"
-VERSION := "v0.4"
 
 GUI_SETTINGS := {
     IDLE: {
@@ -94,48 +95,35 @@ GUI_SETTINGS := {
     }
 }
 
-COLORS := {
-    KNOCKOUT:         {HEX: 0xf21b22, VAR: 20},
-    HIDDEN_KNOCKOUT:  {HEX: 0x05320a, VAR: 5},
-    REBIRTH_BAR:      {HEX: 0x14cd28, VAR: 5},
-    REBIRTH_BUTTON:   {HEX: 0x31BC40, VAR: 20},
-    NOT_YET_BUTTON:   {HEX: 0xab7a49, VAR: 20},
-    PURCHASE_AD:      {HEX: 0xffffff, VAR: 10},
-    SKIP_TO_FRONTIER: {HEX: 0xcea639, VAR: 10},
-    SKIP_TO_WARMUP:   {HEX: 0xa67645, VAR: 10},
-    VICTORY_SCREEN:   {HEX: 0x1ab2fe, VAR: 5},
-    DEFEAT_SCREEN:    {HEX: 0x1ab2fe, VAR: 5},
-}
-
 CLICK_COORDS := {
-    TOWER_ICON:              {X: 592,  Y: 641},
-    TOWER_SKIP_TO_FRONTIER:  {X: 696,  Y: 362},
-    TOWER_SKIP_TO_WARMUP:    {X: 643,  Y: 305},
-    TOWER_START_FROM_BOTTOM: {X: 767,  Y: 380}, ; verify this
-    KEEP_CLIMBING_OFFER:     {X: 603,  Y: 473},
-    REBIRTH_ICON:            {X: 1140, Y: 416},
-    REBIRTH_WINDOW_CLOSE:    {X: 819,  Y: 70},
-    REBIRTH_BUTTON:          {X: 598,  Y: 501},
+    TOWER_ICON:              {X: 375 + 44 // 2, Y: 530 + 60 // 2, W: 44, H: 60},
+    TOWER_SKIP_TO_FRONTIER:  {X: 459 + 88 // 2, Y: 288 + 32 // 2, W: 88, H: 32},
+    TOWER_SKIP_TO_WARMUP:    {X: 459 + 88 // 2, Y: 227 + 32 // 2, W: 88, H: 32},
+    TOWER_START_FROM_BOTTOM: {X: 356 + 88 // 2, Y: 396 + 32 // 2, W: 88, H: 32},
+    KNOCKED_OUT_NO_THANKS:   {X: 356 + 88 // 2, Y: 428 + 24 // 2, W: 88, H: 24},
+    REBIRTH_ICON:            {X: 734 + 54 // 2, Y: 243 + 48 // 2, W: 54, H: 48},
+    REBIRTH_WINDOW_CLOSE:    {X: 588 + 30 // 2, Y: 50 + 30 // 2,  W: 30, H: 30},
+    REBIRTH_BUTTON:          {X: 356 + 88 // 2, Y: 415 + 40 // 2, W: 88, H: 40},
     PURCHASE_AD:             {X: 767,  Y: 380}, ; verify
-    ARENA_ICON:              {X: 1140, Y: 470},
-    GO_TO_BATTLE:            {X: 600,  Y: 500},
-    EXIT_ARENA:              {X: 66,   Y: 55},
-    ARENA_BACK:              {X: 952,  Y: 136},
-    EDIT_TEAM:               {X: 902,  Y: 255},
-    SAVE_TEAM:               {X: 706,  Y: 506},
+    ARENA_ICON:              {X: 55 + 40 // 2,  Y: 372 + 44 // 2, W: 40, H: 44},
+    GO_TO_BATTLE:            {X: 356 + 88 // 2, Y: 396 + 24 // 2, W: 88, H: 24},
+    EXIT_ARENA:              {X: 66, Y: 55},
+    ARENA_BACK:              {X: 620 + 44 // 2, Y: 152 + 24 // 2, W: 44, H: 24},
+    EDIT_TEAM:               {X: 592 + 44 // 2, Y: 234 + 16 // 2, W: 44, H: 16},
+    SAVE_TEAM:               {X: 430 + 88 // 2, Y: 398 + 24 // 2, W: 88, H: 24},
 }
 
-SEARCH_COORDS := {
-    KNOCKOUT_WINDOW:  {X1: 555, Y1: 152, X2: 560, Y2: 157},
-    HIDDEN_KNOCKOUT:  {X1: 335, Y1: 505, X2: 340, Y2: 510},
-    REBIRTH_BAR:      {X1: 430, Y1: 204, X2: 435, Y2: 209},
-    REBIRTH_BUTTON:   {X1: 484, Y1: 460, X2: 704, Y2: 512},
-    NOT_YET_BUTTON:   {X1: 484, Y1: 460, X2: 704, Y2: 512},
-    PURCHASE_AD:      {X1: 767, Y1: 380, X2: 772, Y2: 385},
-    SKIP_TO_FRONTIER: {X1: 643, Y1: 367, X2: 648, Y2: 372},
-    SKIP_TO_WARMUP:   {X1: 643, Y1: 305, X2: 648, Y2: 310},
-    VICTORY_SCREEN:   {X1: 698, Y1: 499, X2: 708, Y2: 509},
-    DEFEAT_SCREEN:    {X1: 698, Y1: 475, X2: 708, Y2: 485},
+PIXEL_SEARCH := {
+    ; KNOCKOUT_WINDOW:  {HEX: 0xf21b22, VAR: 20, X1: 555, Y1: 152, X2: 560, Y2: 157},
+    HIDDEN_KNOCKOUT:  {HEX: 0x05320a, VAR: 5,  X1: 138, Y1: 470, X2: 148, Y2: 480},
+    REBIRTH_BAR:      {HEX: 0x14cc28, VAR: 5,  X1: 532, Y1: 186, X2: 537, Y2: 191},
+    REBIRTH_BUTTON:   {HEX: 0x2fba3e, VAR: 20, X1: 315, Y1: 436, X2: 320, Y2: 441},
+    NOT_YET_BUTTON:   {HEX: 0xab7a49, VAR: 20, X1: 315, Y1: 436, X2: 320, Y2: 441}, ; need update
+    PURCHASE_AD:      {HEX: 0xffffff, VAR: 10, X1: 767, Y1: 380, X2: 772, Y2: 385},
+    SKIP_TO_FRONTIER: {HEX: 0xcfa639, VAR: 10, X1: 453, Y1: 303, X2: 458, Y2: 308},
+    SKIP_TO_WARMUP:   {HEX: 0xcdae20, VAR: 10, X1: 451, Y1: 244, X2: 456, Y2: 249},
+    VICTORY_SCREEN:   {HEX: 0x1ab2fe, VAR: 5, X1: 698, Y1: 499, X2: 708, Y2: 509}, ; need update
+    DEFEAT_SCREEN:    {HEX: 0x1ab2fe, VAR: 5, X1: 698, Y1: 475, X2: 708, Y2: 485}, ; need update
 }
 
 TIMINGS := {
@@ -143,7 +131,6 @@ TIMINGS := {
     FEEDER_UPGRADE_DELAY:  175,
     RETREAT_WAIT:          4500,
     UI_RESPONSE:           50,
-    ANTI_AFK_INTERVAL:     240000,
     FEED_TIME_SINGLE:      6000,   ; milliseconds for feeding with one upgraded feeder
     FEED_TIME_DOUBLE:      12000,  ; milliseconds for feeding with two upgraded feeders
     TIMEOUTS: { ; ms
@@ -154,10 +141,19 @@ TIMINGS := {
     }
 }
 
-antiAfkToggle := false
+EVENTS := [
+    {name: "ANCIENT EGG",   offset: 0},
+    {name: "GOLDEN GOOSE",  offset: 600},
+    {name: "HOT EGG",       offset: 1200},
+    {name: "UFO INVASION",  offset: 1800},
+    {name: "CHICKEN BOSS",  offset: 2400}
+]
+
 hotkeyGotoBattle := "F7"
 hotkeyReroll := "F8"
 noticeMessage := ""
+ROBLOX_AUTOMATION_WIDTH := 800
+ROBLOX_AUTOMATION_HEIGHT := 600
 
 
 ; =====================================================================
@@ -177,17 +173,36 @@ LoadSettings() {
     initialFeedTime := IniRead(INI_FILE, "Settings", "initialFeedTime", 2) ; Time in seconds for feeding before first run (2 for one feeding, 16 for two)
     initialRetreatTime := IniRead(INI_FILE, "Settings", "initialRetreatTime", 0) ; Time in seconds to retreat during the first run
 
-    ufoNotifications := IniRead(INI_FILE, "Settings", "ufoNotifications", 1)
-    ufoCountdown := IniRead(INI_FILE, "Settings", "ufoCountdown", 1)
+    eventCountdown := IniRead(INI_FILE, "Settings", "eventCountdown", 1)
+
+    ancientEggNotifications := IniRead(INI_FILE, "Notifications", "ancientEgg", 1)
+    goldenGooseNotifications := IniRead(INI_FILE, "Notifications", "goldenGoose", 0)
+    hotEggNotifications := IniRead(INI_FILE, "Notifications", "hotEgg", 0)
+    ufoInvasionNotifications := IniRead(INI_FILE, "Notifications", "ufoInvasion", 1)
+    chickenBossNotifications := IniRead(INI_FILE, "Notifications", "chickenBoss", 0)
+}
+
+LoadNotificationSettings() {
+    global EVENTS
+    EVENTS[1].notify := ancientEggNotifications
+    EVENTS[2].notify := goldenGooseNotifications
+    EVENTS[3].notify := hotEggNotifications
+    EVENTS[4].notify := ufoInvasionNotifications
+    EVENTS[5].notify := chickenBossNotifications
 }
 
 SaveSettings() {
-    global
     IniWrite(initialFeedTime, INI_FILE, "Settings", "initialFeedTime")
     IniWrite(initialRetreatTime, INI_FILE, "Settings", "initialRetreatTime")
     IniWrite(feederUpgradeMethod, INI_FILE, "Settings", "feederUpgradeMethod")
-    IniWrite(ufoNotifications, INI_FILE, "Settings", "ufoNotifications")
-    IniWrite(ufoCountdown, INI_FILE, "Settings", "ufoCountdown")
+    IniWrite(eventCountdown, INI_FILE, "Settings", "eventCountdown")
+    IniWrite(ancientEggNotifications, INI_FILE, "Notifications", "ancientEgg")
+    IniWrite(goldenGooseNotifications, INI_FILE, "Notifications", "goldenGoose")
+    IniWrite(hotEggNotifications, INI_FILE, "Notifications", "hotEgg")
+    IniWrite(ufoInvasionNotifications, INI_FILE, "Notifications", "ufoInvasion")
+    IniWrite(chickenBossNotifications, INI_FILE, "Notifications", "chickenBoss")
+
+    LoadNotificationSettings()
 }
 
 SaveWindowPosition(*) {
@@ -202,8 +217,7 @@ SaveWindowPosition(*) {
 ; =====================================================================
 
 ^F12::ReloadScript()
-^F8::AntiAfk()
-Hotkey(hotkeyGotoBattle, GoToBattle, "Off")
+Hotkey(hotkeyGotoBattle, GoToBattleMatchup, "Off")
 Hotkey(hotkeyReroll, RerollMatch, "Off")
 
 
@@ -215,12 +229,12 @@ if !WinExist(ROBLOX_WINDOW) {
     MsgBox "Please start Roblox first."
     ExitApp
 }
-WinMove , , 1200, 702, ROBLOX_WINDOW
 
 LoadSettings()
 SaveSettings()
+LoadNotificationSettings()
 
-SetTimer(CheckInterval, 1000)
+; SetTimer(CheckInterval, 1000)
 
 InitializeGui()
 
@@ -244,6 +258,9 @@ InitializeGui() {
     mainGui.SetFont(GUI_SETTINGS.IDLE.HEADER_FONT_STYLE, GUI_SETTINGS.IDLE.HEADER_FONT_FACE)
     global headerLabel := mainGui.AddText("w" contentWidth " Center", GUI_SETTINGS.IDLE.HEADER_LABEL)
 
+    mainGui.SetFont(GUI_SETTINGS.IDLE.STATUS_LABEL_FONT_STYLE, GUI_SETTINGS.IDLE.STATUS_LABEL_FONT_FACE)
+    global statusLabel := mainGui.AddText("x" marginX " y+12 w" contentWidth " Center", GUI_SETTINGS.IDLE.STATUS_LABEL)
+
     ; Button Row 1
     mainGui.SetFont(GUI_SETTINGS.IDLE.STATUS_LABEL_FONT_STYLE, GUI_SETTINGS.IDLE.STATUS_LABEL_FONT_FACE)
     global buttonRebirth := mainGui.AddButton("x" marginX " y+10 w" threeButtonWidth, "Rebirth")
@@ -260,7 +277,7 @@ InitializeGui() {
     buttonCancel.Visible := false
 
     global buttonBattle := mainGui.AddButton("x" marginX " yp w" threeButtonWidth, "Battle (" hotkeyGotoBattle ")")
-    buttonBattle.OnEvent("Click", GoToBattle)
+    buttonBattle.OnEvent("Click", GoToBattleMatchup)
     buttonBattle.Visible := false
 
     global buttonReroll := mainGui.AddButton("x+10 w" threeButtonWidth, "Reroll (" hotkeyReroll ")")
@@ -271,11 +288,11 @@ InitializeGui() {
     buttonBack.OnEvent("Click", ArenaBackToIdle)
     buttonBack.Visible := false
 
-    mainGui.SetFont(GUI_SETTINGS.IDLE.STATUS_LABEL_FONT_STYLE, GUI_SETTINGS.IDLE.STATUS_LABEL_FONT_FACE)
-    global statusLabel := mainGui.AddText("x" marginX " y+12 w" twoButtonWidth + 35, GUI_SETTINGS.IDLE.STATUS_LABEL)
-
-    mainGui.SetFont("Q5 cWhite s9 W400", "Segoe UI")
-    global countdownLabel := mainGui.AddText("x+" marginX " w" twoButtonWidth - 35 " right", CreateStatusLabel())
+    global countdownLabel := ""
+    if eventCountdown == 1 {
+        mainGui.SetFont("Q5 cWhite s9 W400", "Segoe UI")
+        countdownLabel := mainGui.AddText("x" marginX " y+12 w" contentWidth " right", CreateStatusLabel())
+    }
 
     mainGui.OnEvent("Close", CloseGui)
 
@@ -391,20 +408,48 @@ ShowSettingsGui(*) {
     settingsGui.AddText("x10 y+0", "Retreat after X seconds on initial run")
     
 
-    ; UFO Event
+    ; Event Countdown
     settingsGui.SetFont("Q5 c000000 s10 W800", "Segoe UI")
-    settingsGui.AddText("x10 y+20 w" titleW, "UFO Event")
+    settingsGui.AddText("x10 y+20 w" titleW, "Event Countdown:")
 
+    settingsGui.SetFont("Q5 c000000 s8 W400", "Segoe UI")
+    
+    eventCountdownOptions := ["On", "Off"]
+    eventCountdownInput := settingsGui.AddDropDownList("x+10 yp-3 w" inputW " Choose" eventCountdown, eventCountdownOptions)
+
+
+    ; Event Notifications
+    settingsGui.SetFont("Q5 c000000 s10 W800", "Segoe UI")
+    settingsGui.AddText("x10 y+20 w" titleW, "Event Notifications")
     
     twoButtonWidth := (settingsW - (10 * 3)) // 2
 
     settingsGui.SetFont("Q5 c000000 s10 W400", "Segoe UI")
-    ufoNotificationsInput := settingsGui.Add("CheckBox", "x10 y+5 w" twoButtonWidth " " (ufoNotifications == 1 ? "Checked" : ""), "Notification")
-    ufoCountdownInput := settingsGui.Add("CheckBox", "x+10 " (ufoCountdown == 1 ? "Checked" : ""), "Countdown")
+
+    ancientEggNotificationsInput := settingsGui.Add("CheckBox", "x10 y+5 w" twoButtonWidth " " (ancientEggNotifications == 1 ? "Checked" : ""), "Ancient Egg")
+    goldenGooseNotificationsInput := settingsGui.Add("CheckBox", "x+10 " (goldenGooseNotifications == 1 ? "Checked" : ""), "Golden Goose")
+    hotEggNotificationsInput := settingsGui.Add("CheckBox", "x10 y+5 w" twoButtonWidth " " (hotEggNotifications == 1 ? "Checked" : ""), "Hot Egg")
+    ufoInvasionNotificationsInput := settingsGui.Add("CheckBox", "x+10 " (ufoInvasionNotifications == 1 ? "Checked" : ""), "UFO Invasion")
+    chickenBossNotificationsInput := settingsGui.Add("CheckBox", "x10 y+5 w" twoButtonWidth " " (chickenBossNotifications == 1 ? "Checked" : ""), "Chicken Boss")
+
 
     ; Save Button
     btnSave := settingsGui.AddButton("w150 h30 x" (settingsW // 2) - (150 // 2) " y+20 Default", "Save")
-    btnSave.OnEvent("Click", SaveSettingsGui.Bind(feederUpgradeMethodInput, initialFeedTimeInput, initialRetreatTimeInput, ufoNotificationsInput, ufoCountdownInput))
+
+    btnSave.OnEvent(
+        "Click",
+        SaveSettingsGui.Bind(
+            feederUpgradeMethodInput,
+            initialFeedTimeInput,
+            initialRetreatTimeInput,
+            eventCountdownInput,
+            ancientEggNotificationsInput,
+            goldenGooseNotificationsInput,
+            hotEggNotificationsInput,
+            ufoInvasionNotificationsInput,
+            chickenBossNotificationsInput
+        )
+    )
     
     ; Set coords and show GUI
     mainGui.GetPos(&mainX, &mainY)
@@ -413,14 +458,19 @@ ShowSettingsGui(*) {
     settingsGui.Show("x" CalcXForCenter(mainX, mainW, settingsW) " y" mainY + 35 " w" settingsW)
 }
 
-SaveSettingsGui(feederUpgradeMethodInput, initialFeedTimeInput, initialRetreatTimeInput, ufoNotificationsInput, ufoCountdownInput, *) {
+SaveSettingsGui(feederUpgradeMethodInput, initialFeedTimeInput, initialRetreatTimeInput, eventCountdownInput, ancientEggNotificationsInput, goldenGooseNotificationsInput, hotEggNotificationsInput, ufoInvasionNotificationsInput, chickenBossNotificationsInput, *) {
     global 
     
     feederUpgradeMethod := feederUpgradeMethodInput.Text
     initialFeedTime := initialFeedTimeInput.Value
     initialRetreatTime := initialRetreatTimeInput.Value
-    ufoNotifications := ufoNotificationsInput.Value
-    ufoCountdown := ufoCountdownInput.Value
+    eventCountdown := eventCountdownInput.Value
+
+    ancientEggNotifications := ancientEggNotificationsInput.Value
+    goldenGooseNotifications := goldenGooseNotificationsInput.Value
+    hotEggNotifications := hotEggNotificationsInput.Value
+    ufoInvasionNotifications := ufoInvasionNotificationsInput.Value
+    chickenBossNotifications := chickenBossNotificationsInput.Value
 
     SaveSettings()
     settingsGui.Destroy()
@@ -432,10 +482,10 @@ ShowRebirthGui(*) {
     global selectionGui := Gui("+AlwaysOnTop", " ")
 
     buttonRunTowerUpgrades := selectionGui.Add("Button", "x15 y10 w150 h30", "Start")
-    buttonRunTowerUpgrades.OnEvent("Click", SelectOption.Bind(StepOne))
+    buttonRunTowerUpgrades.OnEvent("Click", SelectOption.Bind(StartRebirthAutomation))
 
     buttonRunTower := selectionGui.Add("Button", "x15 y+5 w150 h30", "Continue")
-    buttonRunTower.OnEvent("Click", SelectOption.Bind(CheckRebirth))
+    buttonRunTower.OnEvent("Click", SelectOption.Bind(ContinueRebirthAutomation))
 
     buttonUpgradeFeeders := selectionGui.Add("Button", "x15 y+5 w150 h30", "Upgrade Feeder(s)")
     buttonUpgradeFeeders.OnEvent("Click", SelectOption.Bind(ShowFeederUpgradeGui))
@@ -450,14 +500,14 @@ ShowRebirthGui(*) {
 ShowArenaGui(*) {
     global selectionGui := Gui("+AlwaysOnTop", " ")
 
-    buttonBattle := selectionGui.Add("Button", "x15 y+5 w150 h30", "Assist")
-    buttonBattle.OnEvent("Click", SelectOption.Bind(ArenaAssist))
+    buttonAssist := selectionGui.Add("Button", "x15 y+5 w150 h30", "Assist")
+    buttonAssist.OnEvent("Click", SelectOption.Bind(StartArenaAssit))
 
-    buttonBattle := selectionGui.Add("Button", "x15 y+5 w150 h30", "Auto")
-    buttonBattle.OnEvent("Click", SelectOption.Bind(ArenaAuto))
+    buttonAuto := selectionGui.Add("Button", "x15 y+5 w150 h30", "Auto")
+    buttonAuto.OnEvent("Click", SelectOption.Bind(StartArenaAutomation))
 
-    buttonDerank := selectionGui.Add("Button", "x15 y+5 w150 h30", "Derank")
-    buttonDerank.OnEvent("Click", SelectOption.Bind(DeRank))
+    ; buttonDerank := selectionGui.Add("Button", "x15 y+5 w150 h30", "Derank")
+    ; buttonDerank.OnEvent("Click", SelectOption.Bind(Derank))
 
     mainGui.GetPos(&mainX, &mainY)
     mainGui.GetClientPos(, , &mainW, &mainH)
@@ -515,12 +565,12 @@ CalcXForCenter(mainX, mainW, newW) {
     return (mainW - newW) // 2 + mainX
 }
 
-CreateStatusLabel(ufoText := "🛸 Calculating...") {
+CreateStatusLabel(countdown := "Calculating...") {
     global statusLabelText := ""
-    if antiAfkToggle
-        statusLabelText := "🕛"
-    if ufoCountdown
-        statusLabelText := statusLabelText ufoText
+
+    if (eventCountdown == 1)
+        statusLabelText := statusLabelText countdown
+
     return statusLabelText
 }
 
@@ -538,7 +588,7 @@ MovePlayer(key, seconds) {
     Send "{" key " up}" 
 }
 
-ClickAt(objectOrTargetX, y := 0, speed := 5, clickDelayMs := 100) {
+ClickAt(objectOrTargetX, y := 0, speed := 5, clickDelayMs := 100, variationX := 5, variationY := 5) {
     if IsObject(objectOrTargetX) && objectOrTargetX.HasProp("X") {
         targetX := objectOrTargetX.X
         targetY := objectOrTargetX.Y
@@ -546,6 +596,12 @@ ClickAt(objectOrTargetX, y := 0, speed := 5, clickDelayMs := 100) {
         targetX := objectOrTargetX
         targetY := y
     }
+
+    if variationX
+        targetX += Random(0, variationX)
+
+    if variationY
+        targetY += Random(0, variationY)
 
     CheckActiveWindow()
     MouseMove targetX, targetY, speed
@@ -569,6 +625,31 @@ ClickAtPercent(x, y, speed := 5, clickDelayMs := 100) {
 ; =====================================================================
 ; UTILITIES
 ; =====================================================================
+
+ResizeClient(x := unset, y := unset, desiredClientW := ROBLOX_AUTOMATION_WIDTH, desiredClientH := ROBLOX_AUTOMATION_HEIGHT, winTitle := ROBLOX_WINDOW) {
+    if !hwnd := WinExist(winTitle)
+        return false
+
+    WinGetPos(&winX, &winY, &winW, &winH, hwnd)
+    WinGetClientPos(, , &clientW, &clientH, hwnd)
+
+    borderW := winW - clientW
+    borderH := winH - clientH
+
+    newWinW := desiredClientW + borderW
+    newWinH := desiredClientH + borderH
+
+    if (IsSet(x) && IsSet(y))
+        WinMove(x, y, newWinW, newWinH, hwnd)
+    if (IsSet(x) && !IsSet(y))
+        WinMove(x, , newWinW, newWinH, hwnd)
+    if (!IsSet(x) && IsSet(y))
+        WinMove(, y, newWinW, newWinH, hwnd)
+    else
+        WinMove(, , newWinW, newWinH, hwnd)
+    
+    return true
+}
 
 ActivateRoblox() {
     if !WinExist(ROBLOX_WINDOW) {
@@ -630,7 +711,7 @@ ImageSearchRobloxClient(location) {
         y,
         x + w,
         y + h,
-        "*100 " location
+        "*1 " location
     )
         return {x: foundX, y: foundY}
 }
@@ -643,58 +724,153 @@ GetCurrentUnixTime() {
     return DateDiff(A_NowUTC, "19700101000000", "Seconds")
 }
 
+CheckWindowSizeForAutomation() {
+    WinGetClientPos(&clientX, &clientY, &clientW, &clientH, ROBLOX_WINDOW)
+    if (clientW != ROBLOX_AUTOMATION_WIDTH || clientH != ROBLOX_AUTOMATION_HEIGHT)
+        return {
+            clientX: clientX,
+            clientY: clientY,
+            clientW: clientW,
+            clientH: clientH
+        }
+}
+
+SetWindowSizeForAutomation(clientPos) {
+    result := MsgBox("The Roblox window will be resized for this automation`n`nWould you like to continue?" , "NOTICE", "YesNo T120 Iconi 0x40000")
+    if (result == "No")
+        return false
+
+    ; WINDOW SIZE LOGIC
+    WinGetPos(&windowX, &windowY, &windowW, &windowH, ROBLOX_WINDOW)
+
+    clientX := clientPos.clientX
+    clientY := clientPos.clientY
+    clientW := clientPos.clientW
+    clientH := clientPos.clientH
+
+    decorationsW := windowW - clientW
+    decorationsH := windowH - clientH
+
+    newW := ROBLOX_AUTOMATION_WIDTH + decorationsW
+    newH := ROBLOX_AUTOMATION_HEIGHT + decorationsH
+
+
+    ; LOCATION LOGIC
+    MonitorGetWorkArea(, &workAreaLeft, &workAreaTop, &workAreaRight, &workAreaBottom)
+    
+    newX := windowX
+    newY := windowY
+
+    ; Check if resizing would push window off the RIGHT edge
+    if (windowX + newW > workAreaRight) {
+        newX := workAreaRight - newW
+    }
+
+    ; Check if resizing would push window off the BOTTOM edge
+    if (windowY + newW > workAreaBottom) {
+        newY := workAreaBottom - newW
+    }
+
+    ; Ensure NewX/NewY aren't off the LEFT or TOP (prevent negative coordinates)
+    if (newX < workAreaLeft)
+        newX := workAreaLeft
+    if (newY < workAreaTop)
+        newY := workAreaTop
+
+
+    ; Apply the movement and resize
+    WinMove(newX, newY, newW, newH, ROBLOX_WINDOW)
+
+    Sleep 1000
+
+    return true
+}
+
 
 ; =====================================================================
 ; GAME STATE
 ; =====================================================================
 
 CheckForKnockout() {
-    s := SEARCH_COORDS.KNOCKOUT_WINDOW
-    c := COLORS.KNOCKOUT
-    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR)
+    ; s := PIXEL_SEARCH.KNOCKOUT_WINDOW
+    ; return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)    
+
+    WinGetClientPos(&robloxX, &robloxY, &robloxW, &robloxH, ROBLOX_WINDOW)
+    searchX1 := robloxX + 340
+    searchY1 := robloxY + 115
+    searchX2 := robloxX + 463
+    searchY2 := robloxY + 159
+
+    Text := "|<>*1$98.s0000yTzk01s00zzi00007zzw00000DzzU0000zsD000003kTs0000Ds0s00001k1y00001w0600000M0DU0800T01k0000C03s02003U0S0000700y00k00s03k0001k07U0S00600y0000w01s07U00U0Dk000T00S01w00807y000Tk0DU0TU0101zs00Ty03U"
+    if FindText(&X, &Y, searchX1, searchY1, searchX2, searchY2, 0, 0, Text) {
+        return true
+    }
+}
+
+CheckForRebirthWindow() {
+    WinGetClientPos(&robloxX, &robloxY, &robloxW, &robloxH, ROBLOX_WINDOW)
+    searchX1 := robloxX + 209
+    searchY1 := robloxY + 52
+    searchX2 := robloxX + 339
+    searchY2 := robloxY + 89
+
+    Text:="|<>*1$110.k000C003k000w06000A0003U00w000701U0030001s07z0000k0M000k000q07zk0s0406000A000RU1zw0D0101U0030003M00303U0E0M000k0k0y000k0k000C060A0A07U00A000003U1U303U1s003000000s0Q0k0s0C000k00040C070A0C01U00A000103U1k203k0M0030000k0k0S0U0w02000k000A0A07U8"
+    if FindText(&X, &Y, searchX1, searchY1, searchX2, searchY2, 0, 0, Text) {
+        return true
+    } else {
+        return false
+    }
 }
 
 CheckForHiddenKnockout() {
-    s := SEARCH_COORDS.HIDDEN_KNOCKOUT
-    c := COLORS.HIDDEN_KNOCKOUT
-    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR)
+    s := PIXEL_SEARCH.HIDDEN_KNOCKOUT
+    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)
 }
 
 CheckRebirthBar() {
-    s := SEARCH_COORDS.REBIRTH_BAR
-    c := COLORS.REBIRTH_BAR
-    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR)
+    s := PIXEL_SEARCH.REBIRTH_BAR
+    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)
 }
 
 CheckRebirthButton() {
-    s := SEARCH_COORDS.REBIRTH_BUTTON
-    c := COLORS.REBIRTH_BUTTON
-    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR)
+    s := PIXEL_SEARCH.REBIRTH_BUTTON
+    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)
 }
 
 CheckNotYetButton() {
-    s := SEARCH_COORDS.NOT_YET_BUTTON
-    c := COLORS.NOT_YET_BUTTON
-    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR)
+    s := PIXEL_SEARCH.NOT_YET_BUTTON
+    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)
 }
 
 CheckForPurchaseAd() {
-    s := SEARCH_COORDS.PURCHASE_AD
-    c := COLORS.PURCHASE_AD
-    if PixelSearchRobloxClient(S.X1, S.Y1, S.X2, S.Y2, C.HEX, C.VAR)
+    s := PIXEL_SEARCH.PURCHASE_AD
+    if PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)
         ClickAt(CLICK_COORDS.PURCHASE_AD)
 }
 
+CheckForArenaWindow() {
+    WinGetClientPos(&robloxX, &robloxY, &robloxW, &robloxH, ROBLOX_WINDOW)
+    searchX1 := robloxX + 149
+    searchY1 := robloxY + 152
+    searchX2 := robloxX + 241
+    searchY2 := robloxY + 189
+
+    Text:="|<>*1$77.00003008300000008600k60000000E601UA0000A00UA030M00k8"
+    if FindText(&X, &Y, searchX1, searchY1, searchX2, searchY2, 0, 0, Text) {
+        return true
+    } else {
+        return false
+    }
+}
+
 CheckForVictoryScreen() {
-    s := SEARCH_COORDS.VICTORY_SCREEN
-    c := COLORS.VICTORY_SCREEN
-    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR)
+    s := PIXEL_SEARCH.VICTORY_SCREEN
+    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)
 }
 
 CheckForDefeatScreen() {
-    s := SEARCH_COORDS.DEFEAT_SCREEN
-    c := COLORS.DEFEAT_SCREEN
-    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR)
+    s := PIXEL_SEARCH.DEFEAT_SCREEN
+    return PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR)
 }
 
 
@@ -702,7 +878,41 @@ CheckForDefeatScreen() {
 ; ARENA
 ; =====================================================================
 
-DeRank(*) {
+StartArenaAutomation(*) {
+    result := MsgBox("Current matchmaking is broken. Auto battling will likely result in more losses than wins.`n`nWould you like to continue?" , "WARNING", "YesNo Icon! 0x40000")
+    if result != "Yes"
+        return
+
+    needsResize := CheckWindowSizeForAutomation()
+    if needsResize
+        if (!SetWindowSizeForAutomation(needsResize))
+            return
+
+    if !OpenArenaWindow()
+        return
+}
+
+StartArenaAssit(*) {
+    result := MsgBox("Arena Assist allows you to go to battle and reroll your matchup with a press of a button.`n`nWould you like to continue?" , "WARNING", "YesNo Icon! 0x40000")
+    if result != "Yes"
+        return
+
+    needsResize := CheckWindowSizeForAutomation()
+    if needsResize
+        if (!SetWindowSizeForAutomation(needsResize))
+            return
+
+    if !OpenArenaWindow()
+        return
+
+    SwitchGui(GUI_SETTINGS.ARENA)
+    Hotkey(hotkeyGotoBattle, GoToBattleMatchup, "On")
+    Hotkey(hotkeyReroll, RerollMatch, "On")
+
+    ClickAt(CLICK_COORDS.GO_TO_BATTLE)
+}
+
+Derank() {
     result := MsgBox("Deranking will auto forfeit arena matches to lower your rank`n`nWould you like to continue?" , "WARNING", "YesNo Icon! 0x40000")
     if result = "Yes" {
         
@@ -727,75 +937,108 @@ DeRank(*) {
     }
 }
 
-ArenaAuto(*) {
-    result := MsgBox("Current matchmaking is broken. Auto battling will likely result in more losses than wins.`n`nWould you like to continue?" , "WARNING", "YesNo Icon! 0x40000")
-    if result = "Yes" {
-        
-        global noticeMessage := "Auto Arena Battle"
+ArenaAuto() {
+    global noticeMessage := "Auto Arena Battle"
 
-        if (mainGui.Title != GUI_SETTINGS.RUNNING.WIN_TITLE)
-            SwitchGui(GUI_SETTINGS.RUNNING)
+    if (mainGui.Title != GUI_SETTINGS.RUNNING.WIN_TITLE)
+        SwitchGui(GUI_SETTINGS.RUNNING)
 
-        ClickAt(CLICK_COORDS.ARENA_ICON)
+    Loop {
+        ClickAt(CLICK_COORDS.GO_TO_BATTLE)
         Sleep TIMINGS.UI_RESPONSE
 
-        while (1 != 2) {
-            ClickAt(CLICK_COORDS.GO_TO_BATTLE)
-            Sleep TIMINGS.UI_RESPONSE
+        ClickAt(CLICK_COORDS.GO_TO_BATTLE)
+        Sleep TIMINGS.UI_RESPONSE
 
-            ClickAt(CLICK_COORDS.GO_TO_BATTLE)
-            Sleep TIMINGS.UI_RESPONSE
+        startTime := A_TickCount
+        while (A_TickCount - startTime < 60000) {
+            if CheckForDefeatScreen()
+                break
 
-            startTime := A_TickCount
-            while (A_TickCount - startTime < 60000) {
-                if CheckForDefeatScreen()
-                    break
-
-                if CheckForVictoryScreen()
-                    break
-            }
-
-            ClickAt(CLICK_COORDS.GO_TO_BATTLE)
+            if CheckForVictoryScreen()
+                break
         }
-    }
-}
 
-GoToBattle(*) {
-    ActivateRoblox
-    ClickAtPercent(0.5, 0.76)
+        ClickAt(CLICK_COORDS.GO_TO_BATTLE)
+    }
 }
 
 RerollMatch(*) {
     ActivateRoblox
 
-    ; ClickAt(2443, 309)
     ClickAt(CLICK_COORDS.ARENA_BACK)
     Sleep TIMINGS.UI_RESPONSE
 
-    ; ClickAt(2354, 574)
+    ClickAt(CLICK_COORDS.ARENA_ICON)
+    Sleep TIMINGS.UI_RESPONSE
+
     ClickAt(CLICK_COORDS.EDIT_TEAM)
     Sleep TIMINGS.UI_RESPONSE
 
-    ; ClickAt(1950, 1086)
     ClickAt(CLICK_COORDS.SAVE_TEAM)
-    Sleep 1500
+    Sleep TIMINGS.UI_RESPONSE
 
+    WinGetClientPos(&robloxX, &robloxY, &robloxW, &robloxH, ROBLOX_WINDOW)
+    searchX1 := robloxX + 389
+    searchY1 := robloxY + 396
+    searchX2 := robloxX + 485
+    searchY2 := robloxY + 430
+
+    Text:="|<>*1$77.00003008300000008600k60000000E601UA0000A00UA030M00k8|<>*1$64.U200E00000E0281U000010000200000400I0800000E00E0U00001000020000000080000000000U0A0q0M0E060100000100E000E080400000100U3k0000U40200000020E080000000100c000000E402U0000010E0+00000k2110c0000308040U0E67VkT0DUy2"
+    if FindText(&x := "wait1", &y := "10", searchX1, searchY1, searchX2, searchY2, 0.2, 0.2, Text) {
+        GoToBattle()
+    } else {
+        MsgBox "Could not find Go to Battle Button"
+    }
+}
+
+GoToBattleMatchup(*) {
     GoToBattle()
+
+    Sleep 20
+
+    WinGetClientPos(&robloxX, &robloxY, &robloxW, &robloxH, ROBLOX_WINDOW)
+    searchX1 := robloxX + 427
+    searchY1 := robloxY + 470
+    searchX2 := robloxX + 475
+    searchY2 := robloxY + 526
+
+    Text:="|<>**1$20.zzzwNgm6HAjVn8Mwnm7Awdn8PAnTzwzzzs|<>**1$21.zzzyAqMVYn5wCNVXnDYCMwdnABaNrzzDzzzU|<>**1$21.zzzyAqMVYn5wCNVXnDYCMwdnABaNrzzDzzzU"
+    if FindText(&x := "wait1", &y := "50", searchX1, searchY1, searchX2, searchY2, 0.2, 0.2, Text) {
+        GoToBattle()
+    } else {
+        MsgBox "Could not find victory screen"
+        return
+    }
+
+    Sleep TIMINGS.UI_RESPONSE
+    ClickAt(CLICK_COORDS.GO_TO_BATTLE)
+}
+
+
+; =====================================================================
+
+GoToBattle() {
+    ClickAt(CLICK_COORDS.GO_TO_BATTLE)
 }
 
 ArenaBackToIdle(*) {
-    Hotkey(hotkeyGotoBattle, GoToBattle, "Off")
+    Hotkey(hotkeyGotoBattle, GoToBattleMatchup, "Off")
     Hotkey(hotkeyReroll, RerollMatch, "Off")
     SwitchGui(GUI_SETTINGS.IDLE)
 }
 
-ArenaAssist(*) {
-    SwitchGui(GUI_SETTINGS.ARENA)
-    Hotkey(hotkeyGotoBattle, GoToBattle, "On")
-    Hotkey(hotkeyReroll, RerollMatch, "On")
-    ClickAt(CLICK_COORDS.ARENA_ICON)
-    Sleep TIMINGS.UI_RESPONSE
-    ClickAt(CLICK_COORDS.GO_TO_BATTLE)
+OpenArenaWindow() {
+    startTime := A_TickCount
+    Loop {
+        if CheckForArenaWindow()
+            return true
+        ClickAt(CLICK_COORDS.ARENA_ICON)
+        Sleep TIMINGS.UI_RESPONSE
+    } Until (A_TickCount - startTime > 5000)
+
+    MsgBox "Timed out looking for Arena window"
+    return false
 }
 
 
@@ -803,7 +1046,70 @@ ArenaAssist(*) {
 ; REBIRTH 
 ; =====================================================================
 
-StepOne(*) {
+StartRebirthAutomation(*) {
+    instructions := {
+        single: "Stand in the back left corner of the coop, behind the feeder",
+        strafe: "Stand in the back left corner of the coop, behind the feeder, facing the tower",
+        turn: "Stand towards the back middle of the coop, facing the left feeder"
+    }
+
+    result := MsgBox("Upgrade Method: " feederUpgradeMethod "`n`n" instructions.%feederUpgradeMethod% "`n`n`nAre you in position?" , "Rebirth Automation", "YesNo 0x40000")
+    if (result == "No")
+        return
+
+    needsResize := CheckWindowSizeForAutomation()
+    if needsResize
+        if (!SetWindowSizeForAutomation(needsResize))
+            return
+
+    if !OpenRebirthWindow()
+        return
+
+    if CheckRebirthButton() {
+        success := TryRebirth()
+        if !success
+            return
+    }
+    else
+        CloseRebirthWindow()
+
+    StepOne()
+}
+
+ContinueRebirthAutomation(*) {
+    if (needsResize := CheckWindowSizeForAutomation())
+        if (!SetWindowSizeForAutomation(needsResize))
+            return
+
+    ClickAt(CLICK_COORDS.REBIRTH_ICON)
+    Sleep TIMINGS.UI_RESPONSE
+
+    startTime := A_TickCount
+    rebirthReady := false
+
+    while (A_TickCount - startTime < TIMINGS.TIMEOUTS.KNOCKED_OUT_POPUP) {
+        if CheckRebirthButton() {
+            rebirthReady := true
+            break
+        }
+        if CheckNotYetButton() {
+            rebirthReady := false
+            break
+        }
+        sleep 50 ; sleep hard code
+    }
+
+    if rebirthReady {
+        if TryRebirth() {
+            StepOne()
+        }
+    } else {
+        CloseRebirthWindow()
+        StepThree()
+    }
+}
+
+StepOne() {
     global noticeMessage := "Starting initial Tower run"
     if (mainGui.Title != GUI_SETTINGS.RUNNING.WIN_TITLE)
         SwitchGui(GUI_SETTINGS.RUNNING)
@@ -822,11 +1128,47 @@ StepTwo() {
     SendToTower()
     Sleep TIMINGS.TOWER_ENTRY_WAIT
 
+
+
+    startTime := A_TickCount
+    Loop {
+        CheckForPurchaseAd()
+
+        if (initialRetreatTime && initialRetreatTime * 1000 - TIMINGS.TOWER_ENTRY_WAIT < A_TickCount - startTime){
+            ; MsgBox "Initial Retreat time triggered after " A_TickCount - startTime " milliseconds"
+            recalled := true
+            Retreat()
+            break
+        }
+
+        if (feederUpgradeMethod == "strafe")
+            UpgradeFeedersStrafe()
+        else if (feederUpgradeMethod == "turn")
+            UpgradeFeedersTurn()
+        else {
+            CheckActiveWindow()
+            Send "e"
+            Sleep 500 ; sleep hard code
+        }
+
+        if CheckForKnockout() {
+            noticeMessage := "Knocked Out"
+            knockedOut := true
+            break
+        }        
+
+
+    } Until (A_TickCount - startTime > TIMINGS.TIMEOUTS.TOWER_RUN_INITIAL)
+
+
+
     startTime := A_TickCount
     knockedOut := false
     recalled := false
 
     while (A_TickCount - startTime < TIMINGS.TIMEOUTS.TOWER_RUN_INITIAL) {
+        CheckForPurchaseAd()
+
         if (initialRetreatTime && initialRetreatTime * 1000 - TIMINGS.TOWER_ENTRY_WAIT < A_TickCount - startTime){
             ; MsgBox "Initial Retreat time triggered after " A_TickCount - startTime " milliseconds"
             recalled := true
@@ -852,7 +1194,7 @@ StepTwo() {
     }
 
     if knockedOut {
-        ClickAt(CLICK_COORDS.KEEP_CLIMBING_OFFER)
+        ClickAt(CLICK_COORDS.KNOCKED_OUT_NO_THANKS)
 
         if (feederUpgradeMethod == "single")
             Sleep TIMINGS.FEED_TIME_SINGLE
@@ -890,16 +1232,24 @@ StepThree(*) {
         SwitchGui(GUI_SETTINGS.WAITING)
 
     result := GetTowerRunResult()
+    if !result
+        return
+
     if result.rebirthReady {
         noticeMessage := "Rebirth is ready"
-        Retreat()
-        
+        CloseRebirthWindow()
+
+        if CheckForKnockout()
+            ClickAt(CLICK_COORDS.KNOCKED_OUT_NO_THANKS)
+        else
+            Retreat()
+
         StepFour()
     } else if result.knockedOut {
         noticeMessage := "Knocked out"
         CloseRebirthWindow()
         Sleep TIMINGS.UI_RESPONSE
-        ClickAt(CLICK_COORDS.KEEP_CLIMBING_OFFER)
+        ClickAt(CLICK_COORDS.KNOCKED_OUT_NO_THANKS)
     
         if (feederUpgradeMethod == "single")
             Sleep TIMINGS.FEED_TIME_SINGLE
@@ -917,60 +1267,39 @@ StepThree(*) {
 }
 
 StepFour() { ; rebirth is ready, just wait for rebirth button to be available
+    if !OpenRebirthWindow()
+        return
+
     startTime := A_TickCount
-    buttonReady := false
-
-    while (A_TickCount - startTime < TIMINGS.TIMEOUTS.KNOCKED_OUT_POPUP) {
-        if CheckRebirthButton() {
-           buttonReady := true
+    Loop { ; wait for button to be ready
+        buttonReady := CheckRebirthButton()
+        if buttonReady
            break
-        }
+        Sleep 50
+    } Until (A_TickCount - startTime > 5000)
 
-        if CheckForHiddenKnockout() {
-            CloseRebirthWindow()
-            Sleep TIMINGS.UI_RESPONSE
+    if !buttonReady
+        return
 
-            ClickAt(CLICK_COORDS.KEEP_CLIMBING_OFFER)
-            Sleep TIMINGS.UI_RESPONSE
+    success := TryRebirth()
+    if !success
+        return
 
-            ClickAt(CLICK_COORDS.REBIRTH_ICON)
-            Sleep TIMINGS.UI_RESPONSE
-        }
-
-        sleep 100 ; sleep hard code
-    }
-
-    if buttonReady {
-        if TryRebirth()
-            StepOne()
-        else
-            StepOne()
-            ; MsgBox "could not click button?"
-    } else {
-            CloseRebirthWindow()
-            Sleep TIMINGS.UI_RESPONSE
-            ClickAt(CLICK_COORDS.KEEP_CLIMBING_OFFER)
-            Sleep TIMINGS.UI_RESPONSE
-            ClickAt(CLICK_COORDS.REBIRTH_ICON)
-            StepFour()
-    }
+    StepOne()
 }
-
 
 SendToTower() {
     ClickAt(CLICK_COORDS.TOWER_ICON)
     Sleep TIMINGS.UI_RESPONSE
 
-    s := SEARCH_COORDS.SKIP_TO_FRONTIER
-    c := COLORS.SKIP_TO_FRONTIER
-    if PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR) {
+    s := PIXEL_SEARCH.SKIP_TO_FRONTIER
+    if PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR) {
         ClickAt(CLICK_COORDS.TOWER_SKIP_TO_FRONTIER)
         return
     }
 
-    s := SEARCH_COORDS.SKIP_TO_WARMUP
-    c := COLORS.SKIP_TO_WARMUP
-    if PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, c.HEX, c.VAR) {
+    s := PIXEL_SEARCH.SKIP_TO_WARMUP
+    if PixelSearchRobloxClient(s.X1, s.Y1, s.X2, s.Y2, s.HEX, s.VAR) {
         ClickAt(CLICK_COORDS.TOWER_SKIP_TO_WARMUP)
         return
     }
@@ -1036,61 +1365,50 @@ UpgradeFeeder(count) {
     SwitchGui(returnState)
 }
 
+OpenRebirthWindow() {
+    startTime := A_TickCount
+    Loop {
+        if CheckForRebirthWindow()
+            return true
+        ClickAt(CLICK_COORDS.REBIRTH_ICON)
+        Sleep TIMINGS.UI_RESPONSE
+    } Until (A_TickCount - startTime > 5000)
+
+    MsgBox "Timed out looking for the Rebirth window"
+    return false
+}
+
+CloseRebirthWindow() {
+    startTime := A_TickCount
+    Loop {
+        ClickAt(CLICK_COORDS.REBIRTH_WINDOW_CLOSE)
+
+        if !CheckForRebirthWindow()
+            return true
+        Sleep TIMINGS.UI_RESPONSE
+    } Until (A_TickCount - startTime > 5000)
+
+    MsgBox "Timed out closing the Rebirth window"
+    return false
+}
+
 TryRebirth() { ; click rebirth until it works
     startTime := A_TickCount
-    while (A_TickCount - startTime < TIMINGS.TIMEOUTS.TRY_REBIRTH)
-    {
-        CheckForPurchaseAd() ; do not confuse with purchase offer
-
+    Loop {
+        CheckForPurchaseAd() ; is this still needed?
         ClickAt(CLICK_COORDS.REBIRTH_BUTTON)
 
         if !CheckRebirthButton()
            return true
- 
-        sleep 1000 ; sleep hard code
-    }
 
+        Sleep 1000
+    } Until (A_TickCount - startTime > TIMINGS.TIMEOUTS.TRY_REBIRTH)
+
+    MsgBox "Timed out trying to use the Rebirth button"
     return false
 }
 
-CheckRebirth(*) {
-    ClickAt(CLICK_COORDS.REBIRTH_ICON)
-    Sleep TIMINGS.UI_RESPONSE
-
-    startTime := A_TickCount
-    rebirthReady := false
-
-    while (A_TickCount - startTime < TIMINGS.TIMEOUTS.KNOCKED_OUT_POPUP) {
-        if CheckRebirthButton() {
-            rebirthReady := true
-            break
-        }
-        if CheckNotYetButton() {
-            rebirthReady := false
-            break
-        }
-        sleep 50 ; sleep hard code
-    }
-
-    if rebirthReady {
-        if TryRebirth() {
-            StepOne()
-        }
-    } else {
-        StepThree()
-    }
-}
-
-CloseRebirthWindow() {
-    ClickAt(CLICK_COORDS.REBIRTH_WINDOW_CLOSE)
-    ; Sleep 500 ; sleep hard code
-    ; ClickAt(CLICK_COORDS.REBIRTH_WINDOW_CLOSE)
-    ; add search to confirm it is closed
-}
-
 GetTowerRunResult() { ; watch for tower floor progress bar completion or hidden knockedout window
-    ClickAt(CLICK_COORDS.REBIRTH_ICON)
-
     if (mainGui.Title != GUI_SETTINGS.WAITING.WIN_TITLE)
         SwitchGui(GUI_SETTINGS.WAITING)   
 
@@ -1099,6 +1417,9 @@ GetTowerRunResult() { ; watch for tower floor progress bar completion or hidden 
     knockedOut := false
 
     while (A_TickCount - startTime < TIMINGS.TIMEOUTS.TOWER_RUN_LOOPED) {
+        if !OpenRebirthWindow()
+            return
+
         if CheckRebirthBar() {
             rebirthReady := true
             break
@@ -1117,76 +1438,53 @@ GetTowerRunResult() { ; watch for tower floor progress bar completion or hidden 
 
 
 ; =====================================================================
-; UFO EVENT
+; EVENT COUNTDOWN & NOTIFICATIONS
 ; =====================================================================
 
-CheckInterval() {
-    global countdownLabel
+global CYCLE_SECONDS := 50 * 60          ; 3000 s full cycle
+global LIVE_SECONDS := 180               ; 3 minutes live
+global NOTIFY_SECONDS := 60              ; notify 1 min before
 
-    static LastTriggeredInterval := -1
-    
-    currentUnix := GetCurrentUnixTime()
-    elapsedSeconds := currentUnix - 1788548400
-    
-    if (elapsedSeconds < 0) {
-        if IsSet(countdownLabel)
-            countdownLabel.Text := CreateStatusLabel("🛸 Pending")
-        return 
-    }
-    
-    intervalSeconds := 40 * 60
-    currentInterval := Floor(elapsedSeconds / intervalSeconds)
-    
-    nextMarkSeconds := (currentInterval + 1) * intervalSeconds
-    timeUntilNextMark := nextMarkSeconds - elapsedSeconds
-    
-    ; Calculate if we are within 3 minutes (180s) of the most recent interval mark
-    lastMarkSeconds := currentInterval * intervalSeconds
-    secondsSinceLastMark := elapsedSeconds - lastMarkSeconds
-    
-    if (secondsSinceLastMark <= 180) {
-        if IsSet(countdownLabel)
-            countdownLabel.Text := CreateStatusLabel("🛸 RIGHT NOW!")
-    } else if IsSet(countdownLabel) {
-        ; Standard countdown if event isn't running
-        mins := Floor(timeUntilNextMark / 60)
-        secs := Mod(timeUntilNextMark, 60)
-        countdownLabel.Text := CreateStatusLabel("🛸 in " . Format("{:02d}:{:02d}", mins, secs))
-    }
-    ; --------------------------------------------
+EVENT_BASE := 1789229400          ; ANCIENT_EGG start
 
-    if (timeUntilNextMark <= 60 && timeUntilNextMark > 0 && currentInterval > LastTriggeredInterval && ufoNotifications) {
-        TrayTip("UFO Event", "Starts in the next minute!")
-        LastTriggeredInterval := currentInterval
-    }
-}
+SetTimer(UpdateCountdown.Bind(countdownLabel), 1000)
 
+UpdateCountdown(countdownLabel) {
+    static CYCLE      := 3000   ; 5 events * 600s
+    static SLOT       := 600    ; 10 min between event starts
+    static DURATION   := 180    ; 3 min active window
+    static lastWarned := -1     ; index of the event we've already warned about
 
-; =====================================================================
-; ANTI-AFK
-; =====================================================================
+    nowUnix := DateDiff(A_NowUTC, "19700101000000", "Seconds")
 
-AntiAfk(*) {
-    global antiAfkToggle := !antiAfkToggle
-    global countdownLabel
-    countdownLabel.Text := CreateStatusLabel()
-    
-    if antiAfkToggle {
-        SetTimer(Jump, TIMINGS.ANTI_AFK_INTERVAL)
-        TrayTip("Anti-AFK", "Enabled")
+    elapsed := Mod(nowUnix - EVENT_BASE, CYCLE)
+    if (elapsed < 0)
+        elapsed += CYCLE
+
+    currentIndex := elapsed // SLOT
+    intoSlot     := Mod(elapsed, SLOT)
+
+    currentEvent := EVENTS[currentIndex + 1]
+    nextEvent    := EVENTS[Mod(currentIndex + 1, EVENTS.Length) + 1]
+
+    if (intoSlot < DURATION) {
+        ; Event is live — show remaining time on it
+        remaining := DURATION - intoSlot
+        mm := Format("{:02}", remaining // 60)
+        ss := Format("{:02}", Mod(remaining, 60))
+        countdownLabel.Text := currentEvent.name " (" mm ":" ss ")"
     } else {
-        SetTimer(Jump, 0)
-        TrayTip("Anti-AFK", "Disabled")
-    }
-}
+        ; Waiting for next event
+        remaining := SLOT - intoSlot   ; seconds until next event starts
+        mm := Format("{:02}", remaining // 60)
+        ss := Format("{:02}", Mod(remaining, 60))
+        countdownLabel.Text := nextEvent.name " in " mm ":" ss
 
-Jump() {
-    if WinExist("ahk_exe RobloxPlayerBeta.exe") {
-        WinActivate("ahk_exe RobloxPlayerBeta.exe")
-
-        try WinWaitActive("ahk_exe RobloxPlayerBeta.exe", , 2)
-
-        Send "{Space}"
-        ClickAt(589, 467)
+        ; Warn once, at the top of the final minute before the next event
+        nextIndex := Mod(currentIndex + 1, EVENTS.Length)
+        if (remaining <= 60 && lastWarned != nextIndex && nextEvent.notify) {
+            TrayTip(nextEvent.name, "Starts in the next minute!")
+            lastWarned := nextIndex
+        }
     }
 }

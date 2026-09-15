@@ -60,39 +60,22 @@ Join my community Discord server at [discord.gg/kipperz](https://discord.gg/kipp
 ### Rebirth Automation
 This automation will buy and upgrade feeders, run the Tower continuously until eligible for rebirth, recall the chicken, rebirth, and then repeat until the automation is canceled.
 
-#### How to use
-1. Move your player in to position according to the **Upgrade Method** (set from the ⚙️ button)
-	- **single** - Back left corner of the coop, behind the feeder
-	- **strafe** - Back left corner of the coop, behind the feeder, facing the tower
-	- **turn** - Towards the back middle of the coop, facing the left feeder
+- Press **Rebirth** then **Start**, or
 
-2. Press **Rebirth** then **Start**, or
-
-3. Press **Continue** if your run was interrupted and feeders are already upgraded.
-
-#### How it works
-The full rebirth process is automated and looped until canceled. For most of the automation, you will need to avoid mouse and keyboard input and the tool will display "Automation in control."  If another window gains focus while the automation is in control, the automation will halt and send an alert. During most of Phase 2, the tool will show "Safe to multitask". While the tool is in this state, you may work in other windows but the Tower Floor progress bar must remain visible. The automation cannot detect the progress bar if Roblox is minimized or covered by another window.
-
-- **Phase 1:** The feeder is purchased, the chicken is allowed time to feed, then the initial tower run is started. During this run, the feeders are upgraded until the chicken is knocked out or recalled. You can set an upgrade method (one or two feeders) and a recall time in the settings.
-
-- **Phase 2:** Time is allowed for the chicken to feed, then the tower run is continued until rebirth is ready. If your chicken gets knocked out, refeeding time is given before continuing the tower run. This will loop until the rebirth requirement is met.
-
-- **Phase 3:** Rebirth is ready so the chicken is recalled by pressing **Retreat.** The rebirth button will be pressed until successfully rebirthing and the process starts back at Phase 1.
+- Press **Continue** if your run was interrupted and feeders are already upgraded
 <br/>
 
 ### Arena Automations
+- **Assist:** With current matchmaking, this is the best method for ranking up. Use **F7** to press the **Go To Battle** button and **F8** to reroll the match-up when you're out of skips.
 
-**How to use**
-1. **Assist:** With current matchmaking, this is the best method for ranking up. Use **F7** to press the **Go To Battle** button and **F8** to reroll the match-up when you're out of skips.
+- **Auto:** Automatically go to battle until canceled. Auto battling will likely result in more losses than wins but you will earn crowns for the shop and feathers for upgrades at the expense of losing rank.
 
-2. **Auto:** Automatically go to battle until canceled. Auto battling will likely result in more losses than wins but you will earn crowns for the shop and feathers for upgrades at the expense of losing rank.
-
-3. **Derank:**  Automatically go to battle and forfeit to lower your rank.
+- **Derank:**  Automatically go to battle and forfeit to lower your rank. (Temporary disabled)
 <br/>
 
-### UFO Event Notifications
+### Event Notifications
 
-Get notified when the next UFO Event is about to start. Enable/disable a visual countdown to the event from the settings menu
+Get notified when the an event is about to start - choose which events you want to receive notifications for in the settings. You can also enable/disable the visual countdown to the next event
 
 <br/>
 

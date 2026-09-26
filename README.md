@@ -1,5 +1,9 @@
 # EZ Mode - Grow a Chicken Fighter
-### EZ Mode for Roblox: Grow a Chicken Fighter is a helper tool that uses AutoHotKey to automate repetitive gameplay such as rebirthing and provides useful features like event notifications.
+### EZ Mode for Roblox: Grow a Chicken Fighter is a helper tool for Windows that uses AutoHotKey to automate repetitive gameplay such as rebirthing and provides useful features like event notifications.
+<br/>
+
+> [!WARNING]  
+> EZ Mode Automations use pixel/image searches to detect game state and perform actions by sending keystrokes and mouse events to the Roblox client — think of it as ***smart macros***. The tool does not inject code into the client (commonly known as scripting) or modify game files, however, automations of any kind can violate Roblox TOS. Use the automations at your own risk.
 <br/>
 
 **Usage Guide**
@@ -16,17 +20,10 @@
 - [License](#license)
 <br/>
 
-***
-> [!WARNING]  
-> Automating games in Roblox violates their Terms of Service and can lead to account bans. Use the automations at your own risk.
-
-EZ Mode Automations use pixel/image searches to detect game events and perform actions by sending keystrokes and mouse events to the Roblox client — think of it as ***smart macros***. The tool does not inject code into the client (commonly known as scripting) or modify game files, however, automations of any kind can violate Roblox TOS.
-***
-<br/>
-
 ## Usage Guide
 ### Support
 Join my community Discord server at [discord.gg/kipperz](https://discord.gg/kipperz) for support, suggestions, or game discussion.
+
 <br/>
 
 ### Prerequisites
@@ -64,7 +61,7 @@ This automation will buy and upgrade feeders, run the Tower continuously until e
 <br/>
 
 ### Arena Automations
-- **Assist:** With current matchmaking, this is the best method for ranking up. Use **F7** to press the **Go To Battle** button and **F8** to skip or auto reroll the match-up when you're out of skips.
+- **Assist:** With current matchmaking, this is the best method for ranking up. From the match up screen, use **F7** to go to battle and **F8** to skip or auto reroll the match-up when you're out of skips.
 
 - **Auto:** Automatically go to battle until canceled. Auto battling will likely result in more losses than wins but you will earn crowns for the shop and feathers for upgrades at the expense of losing rank.
 
@@ -73,7 +70,7 @@ This automation will buy and upgrade feeders, run the Tower continuously until e
 
 ### Event Tracker
 
-Get notified when an event is about to start and see a countdown to the next event. Check the events you want to get notifications for and which to include the countdown from the settings menu.
+Get notifications and a visual countdown for in-game events. Set up your notifications by event and include or exclude events from the countdown in the settings menu
 
 <br/>
 

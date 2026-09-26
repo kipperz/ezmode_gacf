@@ -1,5 +1,5 @@
 # EZ Mode - Grow a Chicken Fighter
-### EZ Mode for Roblox: Grow a Chicken Fighter is a helper tool that uses AutoHotKey to automate repetitive gameplay such as rebirthing and provides useful features like UFO Event notifications.
+### EZ Mode for Roblox: Grow a Chicken Fighter is a helper tool that uses AutoHotKey to automate repetitive gameplay such as rebirthing and provides useful features like event notifications.
 <br/>
 
 **Usage Guide**
@@ -10,7 +10,7 @@
 **Key Features**
 - [Rebirth Automation](#rebirth-automation)
 - [Arena Automations](#arena-automations)
-- [UFO Event Notification](#event-notifications)
+- [Event Tracker](#event-tracker)
 
 **Other**
 - [License](#license)
@@ -64,16 +64,16 @@ This automation will buy and upgrade feeders, run the Tower continuously until e
 <br/>
 
 ### Arena Automations
-- **Assist:** With current matchmaking, this is the best method for ranking up. Use **F7** to press the **Go To Battle** button and **F8** to reroll the match-up when you're out of skips.
+- **Assist:** With current matchmaking, this is the best method for ranking up. Use **F7** to press the **Go To Battle** button and **F8** to skip or auto reroll the match-up when you're out of skips.
 
 - **Auto:** Automatically go to battle until canceled. Auto battling will likely result in more losses than wins but you will earn crowns for the shop and feathers for upgrades at the expense of losing rank.
 
 - **Derank:**  Automatically go to battle and forfeit to lower your rank. (Temporary disabled)
 <br/>
 
-### Event Notifications
+### Event Tracker
 
-Get notified when the an event is about to start - choose which events you want to receive notifications for in the settings. You can also enable/disable the visual countdown to the next event
+Get notified when an event is about to start and see a countdown to the next event. Check the events you want to get notifications for and which to include the countdown from the settings menu.
 
 <br/>
 

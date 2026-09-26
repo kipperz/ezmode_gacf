@@ -1,6 +1,3 @@
-gui/
-.vscode/
-.venv/
+.*/
 *.ini
-*.txt
 *.exe
